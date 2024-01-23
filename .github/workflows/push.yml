@@ -1,0 +1,26 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  build:
+    name: Deploy
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - uses: moonrepo/setup-rust@v1
+      - name: Build
+        run: cargo build --release
+      - name: Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "release-${{ github.run_id }}-${{ github.run_attempt }}"
+          prerelease: false
+          title: "Home-Env Bootstrap"
+          files: |
+            target/release/bootstrap.exe

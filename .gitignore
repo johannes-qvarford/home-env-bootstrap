@@ -1,0 +1,8 @@
+fishd*
+node_modules
+.twitch-subscriptions
+.new-twitch-videos
+*~
+.parcel-cache
+dist
+target
