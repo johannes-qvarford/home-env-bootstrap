@@ -12,9 +12,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - uses: moonrepo/setup-rust@v1
+      - name: Setup
+        uses: moonrepo/setup-rust@v1
       - name: Build
         run: cargo build --release
+      - name: Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          # The prefix cache key, this can be changed to start a new cache manually.
+          prefix-key: "v1"
       - name: Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
