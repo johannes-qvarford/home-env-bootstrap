@@ -74,6 +74,7 @@ fn main() -> Result<()> {
         bash!("fzf"),
         bash!("extra"),
         bash!("backup"),
+        bash!("wsl-context-menu-item"),
         scheduled_task("backup-media", "11:00 am"),
         scheduled_task("upgrade-tools", "12:00 pm"),
         move_sensitive_information(),
