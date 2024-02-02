@@ -23,6 +23,7 @@ fn powershell_string(_task: &MoveSensitiveInformation) -> String {
     // TODO: Break out into individual tasks for each directory
     // TODO: Do everything is Rust.
     // TODO: Do not use the Z: drive if it causes problems
+    // TODO: In fact, just get a 1TB boot drive and encrypt it.
     r#"
     function Move-AppData {
         param (
@@ -41,6 +42,8 @@ fn powershell_string(_task: &MoveSensitiveInformation) -> String {
         Move-Item -Path "$SourceDirectory" -Destination "$DestinationDirectory"
         New-Item -Path "$SourceDirectory" -ItemType SymbolicLink -Value "$DestinationDirectory"
     }
+
+    cd C:
     
     New-Item -ItemType Directory Z:\Secrets
     New-Item -ItemType Directory Z:\Local
