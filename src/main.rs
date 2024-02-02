@@ -48,6 +48,7 @@ fn main() -> Result<()> {
         winget("WinDirStat.WinDirStat"),
         winget("BleachBit.BleachBit"),
         winget("7zip.7zip"),
+        winget("HandBrake.HandBrake"),
         // WSL
 
         // Clone repository
@@ -79,12 +80,6 @@ fn main() -> Result<()> {
         // Cool fonts
         nerd_font(),
         connect_windows_terminal(),
-        // Not really used
-        // winget("WiresharkFoundation.Wireshark"),
-        // winget("Oracle.VirtualBox"),
-        // winget("Lexikos.AutoHotkey"),
-        // winget("HandBrake.HandBrake"),
-        // winget("Telerik.Fiddler.Classic"),
     ];
 
     for task in tasks {
