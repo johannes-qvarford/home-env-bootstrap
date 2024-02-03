@@ -52,6 +52,7 @@ fn main() -> Result<()> {
         // WSL
 
         // Clone repository
+        bash!("start"),
         bash!("github"),
         bash!("clone-home-env"),
         // Home-env usage.
@@ -70,11 +71,13 @@ fn main() -> Result<()> {
         bash!("java"),
         bash!("zig"),
         // Fun
+        bash!("httpie"),
         bash!("colors"),
         bash!("fzf"),
         bash!("extra"),
         bash!("backup"),
-        bash!("wsl-context-menu-item"),
+        // Not needed, but keep it around for reference
+        // bash!("wsl-context-menu-item"),
         scheduled_task("backup-media", "11:00 am"),
         scheduled_task("upgrade-tools", "12:00 pm"),
         move_sensitive_information(),
