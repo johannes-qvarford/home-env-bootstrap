@@ -10,7 +10,6 @@ use colored::Colorize;
 use tasks::choco::choco;
 use tasks::connect_windows_terminal::connect_windows_terminal;
 use tasks::install_wsl::install_wsl;
-use tasks::move_sensitive_information::move_sensitive_information;
 use tasks::nerd_font::nerd_font;
 use tasks::scheduled_task::scheduled_task;
 use tasks::winget::winget;
@@ -80,7 +79,6 @@ fn main() -> Result<()> {
         // bash!("wsl-context-menu-item"),
         scheduled_task("backup-media", "11:00 am"),
         scheduled_task("upgrade-tools", "12:00 pm"),
-        move_sensitive_information(),
         // Cool fonts
         nerd_font(),
         connect_windows_terminal(),
