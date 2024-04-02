@@ -75,7 +75,6 @@ fn main() -> Result<()> {
         bash!("fish"),
         // win-server
         bash!("wslu"),
-        bash!("systemd"),
         bash!("docker"),
         // privacy
         bash!("ansible"),
