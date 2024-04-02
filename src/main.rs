@@ -58,12 +58,12 @@ fn main() -> Result<()> {
         winget("ProtonTechnologies.ProtonVPN"),
         winget("Bitwarden.Bitwarden"),
         // Utility
-        winget("Facebook.Messenger"),
         winget("WinDirStat.WinDirStat"),
         winget("BleachBit.BleachBit"),
         winget("7zip.7zip"),
         winget("HandBrake.HandBrake"),
         winget("testy"),
+        choco("messenger"),
         // WSL
 
         // Clone repository
