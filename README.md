@@ -11,5 +11,7 @@
 # Stuff
 
 rustup target add x86_64-pc-windows-gnu
-cargo build --target x86_64-pc-windows-gnu
 sudo apt-get install mingw-w64
+
+cargo build --target x86_64-pc-windows-gnu --release
+./target/x86_64-pc-windows-gnu/debug/bootstrap.exe --task install_wsl

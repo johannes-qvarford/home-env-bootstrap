@@ -15,7 +15,6 @@ use tasks::install_wsl::install_wsl;
 use tasks::nerd_font::nerd_font;
 use tasks::scheduled_task::scheduled_task;
 use tasks::winget::winget;
-use utility::task::Execution;
 
 use clap::Parser;
 
@@ -25,6 +24,9 @@ struct Args {
     /// Task to run exclusively
     #[arg(long)]
     task: Option<String>,
+
+    #[arg(long, default_value_t = 0)]
+    skip: i32
 }
 
 fn main() -> Result<()> {
@@ -61,6 +63,7 @@ fn main() -> Result<()> {
         winget("BleachBit.BleachBit"),
         winget("7zip.7zip"),
         winget("HandBrake.HandBrake"),
+        winget("testy"),
         // WSL
 
         // Clone repository
@@ -102,13 +105,22 @@ fn main() -> Result<()> {
 
         task.execute().wrap_err("Executing task")?;
         task.mark_executed().wrap_err("Marking task as executed")?;
+        println!("{}", &format!("Forcefully executed task '{task_name}'.").yellow());
         return Ok(());
     }
 
 
+    let mut skip = args.skip;
     for task in tasks {
         let name = task.name();
-        let execution = task
+
+        if skip > 0 && !task.has_been_executed().wrap_err_with(|| format!("checking if task {name} has been executed"))? {
+            skip -= 1;
+            task.mark_executed().wrap_err_with(|| format!("marking task {name} as executed"))?;
+            println!("{}", &format!("Forcefully marked task '{name}' as executed.").yellow());
+        }
+
+        task
             .execute_if_needed()
             .wrap_err_with(|| format!("Executing task '{name}' if needed"))?;
     }

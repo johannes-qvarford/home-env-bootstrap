@@ -46,7 +46,7 @@ impl dyn Task {
         }
     }
 
-    fn has_been_executed(&self) -> Result<bool> {
+    pub(crate) fn has_been_executed(&self) -> Result<bool> {
         let path = self.mark_path()?;
         path.try_exists()
             .wrap_err_with(|| format!("Verifying existance of mark path '{path:?}'"))
