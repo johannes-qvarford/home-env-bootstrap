@@ -111,6 +111,7 @@ dependencies = [
  "clap",
  "color-eyre",
  "colored",
+ "const-str",
  "dirs",
  "embed-resource",
  "reqwest",
@@ -225,6 +226,12 @@ dependencies = [
  "lazy_static",
  "windows-sys 0.48.0",
 ]
+
+[[package]]
+name = "const-str"
+version = "0.5.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3618cccc083bb987a415d85c02ca6c9994ea5b44731ec28b9ecf09658655fba9"
 
 [[package]]
 name = "core-foundation"

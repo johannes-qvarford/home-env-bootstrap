@@ -38,6 +38,6 @@ pub(crate) fn bash(name: &'static str, content: &'static str) -> Box<dyn task::T
 #[macro_export]
 macro_rules! bash {
     ($file:expr) => {{
-        tasks::bash::bash($file, include_str!(concat!("resources/", $file, ".sh")))
+        tasks::bash::bash($file, ::const_str::replace!(include_str!(concat!("resources/", $file, ".sh")), "\r\n", "\n"))
     }};
 }
