@@ -19,7 +19,7 @@ fn main() -> Result<()> {
     color_eyre::install()?;
 
     let tasks = vec![
-        // Before restart
+        // No restart is needed nowadays.
         install_wsl(),
         // Development
         winget("Microsoft.WindowsTerminal"),

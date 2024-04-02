@@ -14,7 +14,7 @@ impl task::Task for InstallWsl {
     }
 
     fn requires_restart(&self) -> bool {
-        true
+        false
     }
 }
 
