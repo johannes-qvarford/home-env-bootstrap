@@ -52,7 +52,7 @@ impl dyn Task {
             .wrap_err_with(|| format!("Verifying existance of mark path '{path:?}'"))
     }
 
-    fn mark_executed(&self) -> Result<()> {
+    pub(crate) fn mark_executed(&self) -> Result<()> {
         File::create(
             self.mark_path()
                 .wrap_err("Calculating path of mark file to create")?,

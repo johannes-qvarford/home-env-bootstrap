@@ -14,7 +14,9 @@ impl task::Task for Choco {
 
     fn execute(&self) -> Result<()> {
         let package_name = self.package_name;
-        process::execute("choco.exe", &["install", "-y", self.package_name], &[])
+        // We hardcode the path to the binary, because the PATH might not have updated fast enough.
+        // Probably frail.
+        process::execute(r#"C:\ProgramData\chocolatey\bin\choco.exe"#, &["install", "-y", self.package_name], &[])
             .wrap_err(format!("Calling choco install {package_name}"))
     }
 }

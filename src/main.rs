@@ -1,5 +1,7 @@
 #![windows_subsystem = "console"]
 
+
+use color_eyre::eyre::ContextCompat;
 use color_eyre::{eyre::Context, Result};
 
 // TODO: Separate utility from tasks
@@ -15,8 +17,20 @@ use tasks::scheduled_task::scheduled_task;
 use tasks::winget::winget;
 use utility::task::Execution;
 
+use clap::Parser;
+
+#[derive(Parser, Debug)]
+#[command(version, about, long_about = None)]
+struct Args {
+    /// Task to run exclusively
+    #[arg(long)]
+    task: Option<String>,
+}
+
 fn main() -> Result<()> {
     color_eyre::install()?;
+
+    let args = Args::parse();
 
     let tasks = vec![
         // No restart is needed nowadays.
@@ -28,7 +42,6 @@ fn main() -> Result<()> {
         winget("9PGCV4V3BK4W"), // DevToys
         winget("DBBrowserForSQLite.DBBrowserForSQLite"),
         winget("Microsoft.PowerToys"),
-        // winget("Canonical.Ubuntu.2204"), The latest Ubuntu should be installed by default.
 
         // Media
         winget("Mozilla.Firefox"),
@@ -84,15 +97,20 @@ fn main() -> Result<()> {
         connect_windows_terminal(),
     ];
 
+    if let Some(task_name) = args.task {
+        let task = tasks.into_iter().find(|t| t.name() == task_name).with_context(|| format!("Looking for task with name {task_name}"))?;
+
+        task.execute().wrap_err("Executing task")?;
+        task.mark_executed().wrap_err("Marking task as executed")?;
+        return Ok(());
+    }
+
+
     for task in tasks {
         let name = task.name();
         let execution = task
             .execute_if_needed()
             .wrap_err_with(|| format!("Executing task '{name}' if needed"))?;
-        if execution == Execution::Performed && task.requires_restart() {
-            println!("{}", "Please restart now before running again.".yellow());
-            return Ok(());
-        }
     }
 
     println!("{}", "Done! Press any button!".green());
