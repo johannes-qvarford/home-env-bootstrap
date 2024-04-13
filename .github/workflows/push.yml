@@ -6,7 +6,8 @@ on:
       - "main"
 
 env:
-  cache-version: v4
+  cache-version: v5
+  windows-target: x86_64-pc-windows-gnu
 
 jobs:
   build:
@@ -25,7 +26,7 @@ jobs:
           key: ubuntu-22.04-cache-cargo-${{ env.cache-version }}
       - name: Install rustup
         if: steps.cache-cargo.outputs.cache-hit != 'true'
-        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --target x86_64-pc-windows-gnu
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --target ${{ env.windows-target }}
       - name: Cache Cargo packages
         uses: Swatinem/rust-cache@v2
         with:
@@ -36,10 +37,12 @@ jobs:
         with:
           packages: mingw-w64
           version: 1.0
+      - name: Install Apt packages
+        run: apt-get install mingw-w64
       - name: Build for Linux
         run: cargo build --release
       - name: Build for Windows
-        run: cargo build --target x86_64-pc-windows-gnu --release
+        run: cargo build --target ${{ env.windows-target }} --release
       - name: Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -49,4 +52,4 @@ jobs:
           title: "Home-Env Bootstrap"
           files: |
             target/release/bootstrap
-            target/x86_64-pc-windows-gnu/release/bootstrap.exe
+            target/${{ env.windows-target }}/release/bootstrap.exe
