@@ -5,6 +5,9 @@ on:
     branches:
       - "main"
 
+env:
+  cache-version: v3
+
 jobs:
   build:
     name: Deploy
@@ -19,15 +22,15 @@ jobs:
         uses: actions/cache@v4
         with:
           path: $HOME/.cargo
-          key: ubuntu-22.04-cache-cargo
+          key: ubuntu-22.04-cache-cargo-${{ env.cache-version }}
       - name: Install rustup
         if: steps.cache-cargo.outputs.cache-hit != 'true'
-        run: curl --proto '=https' -y --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --target x86_64-pc-windows-gnu
+        run: curl --proto '=https' -y --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --target x86_64-pc-windows-gnu
       - name: Cache Cargo packages
         uses: Swatinem/rust-cache@v2
         with:
           # The prefix cache key, this can be changed to start a new cache manually.
-          prefix-key: "v2"
+          prefix-key: ${{ env.cache-version }}
       - name: Cache Apt packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
