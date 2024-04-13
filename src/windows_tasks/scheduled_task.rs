@@ -47,7 +47,7 @@ fn powershell_string(task: &ScheduledTask) -> String {
     )
 }
 
-pub(crate) fn scheduled_task(name: &str, at: &str) -> Box<dyn task::Task> {
+pub(crate) fn scheduled_task_task(name: &str, at: &str) -> Box<dyn task::Task> {
     Box::new(ScheduledTask {
         name: name.to_owned(),
         at: at.to_owned(),

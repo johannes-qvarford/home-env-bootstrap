@@ -31,13 +31,13 @@ impl task::Task for Bash {
     }
 }
 
-pub(crate) fn bash(name: &'static str, content: &'static str) -> Box<dyn task::Task> {
+pub(crate) fn bash_task(name: &'static str, content: &'static str) -> Box<dyn task::Task> {
     Box::new(Bash { name, content })
 }
 
 #[macro_export]
-macro_rules! bash {
+macro_rules! bash_task {
     ($file:expr) => {{
-        tasks::bash::bash($file, ::const_str::replace!(include_str!(concat!("resources/", $file, ".sh")), "\r\n", "\n"))
+        crate::tasks::bash::bash_task($file, ::const_str::replace!(include_str!(concat!("resources/", $file, ".sh")), "\r\n", "\n"))
     }};
 }

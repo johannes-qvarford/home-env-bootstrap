@@ -21,6 +21,6 @@ impl task::Task for Choco {
     }
 }
 
-pub(crate) fn choco(package_name: &'static str) -> Box<dyn task::Task> {
+pub(crate) fn choco_task(package_name: &'static str) -> Box<dyn task::Task> {
     Box::new(Choco { package_name })
 }

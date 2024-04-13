@@ -66,6 +66,6 @@ impl task::Task for ConnectWindowsTerminal {
     }
 }
 
-pub(crate) fn connect_windows_terminal() -> Box<dyn task::Task> {
+pub(crate) fn connect_windows_terminal_task() -> Box<dyn task::Task> {
     Box::new(ConnectWindowsTerminal)
 }

@@ -33,6 +33,6 @@ impl task::Task for Winget {
     }
 }
 
-pub(crate) fn winget(package_name: &'static str) -> Box<dyn task::Task> {
+pub(crate) fn winget_task(package_name: &'static str) -> Box<dyn task::Task> {
     Box::new(Winget { package_name })
 }

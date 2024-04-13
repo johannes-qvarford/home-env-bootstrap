@@ -18,6 +18,6 @@ impl task::Task for InstallWsl {
     }
 }
 
-pub(crate) fn install_wsl() -> Box<dyn task::Task> {
+pub(crate) fn install_wsl_task() -> Box<dyn task::Task> {
     Box::new(InstallWsl)
 }
