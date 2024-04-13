@@ -16,21 +16,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Add Cargo to PATH
-        run: echo "${HOME}/.cargo/bin" >> $GITHUB_PATH
-      - name: Cache Cargo
-        id: cache-cargo
-        uses: actions/cache@v4
-        with:
-          path: $HOME/.cargo
-          key: ubuntu-22.04-cache-cargo-${{ env.cache-version }}
-      - name: Install rustup
-        if: steps.cache-cargo.outputs.cache-hit != 'true'
-        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --target ${{ env.windows-target }}
+      #- name: Add Cargo to PATH
+      #  run: echo "${HOME}/.cargo/bin" >> $GITHUB_PATH
+      # - name: Cache Cargo
+      #   id: cache-cargo
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: $HOME/.cargo
+      #     key: ubuntu-22.04-cache-cargo-${{ env.cache-version }}
       - name: Cache Cargo packages
+        id: rust-cache
         uses: Swatinem/rust-cache@v2
         with:
           prefix-key: ${{ env.cache-version }}
+      - name: Install Rustup
+        if: steps.rust-cache.outputs.cache-hit != 'true'
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --target ${{ env.windows-target }}
       - name: Cache Apt packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
