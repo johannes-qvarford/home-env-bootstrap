@@ -62,7 +62,6 @@ fn main() -> Result<()> {
         winget("BleachBit.BleachBit"),
         winget("7zip.7zip"),
         winget("HandBrake.HandBrake"),
-        winget("testy"),
         choco("messenger"),
         // WSL
 
