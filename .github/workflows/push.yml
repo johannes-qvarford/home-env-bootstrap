@@ -30,15 +30,14 @@ jobs:
       - name: Cache Cargo packages
         uses: Swatinem/rust-cache@v2
         with:
-          # The prefix cache key, this can be changed to start a new cache manually.
           prefix-key: ${{ env.cache-version }}
       - name: Cache Apt packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: mingw-w64
-          version: 1.0
+          version: ${{ env.cache-version }}
       - name: Install Apt packages
-        run: apt-get install mingw-w64
+        run: sudo apt-get install -y mingw-w64
       - name: Build for Linux
         run: cargo build --release
       - name: Build for Windows
