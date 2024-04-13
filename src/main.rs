@@ -97,7 +97,7 @@ fn main() -> Result<()> {
         nerd_font(),
         connect_windows_terminal(),
     ];
-    let a = 10;
+    let _a = 10;
 
     if let Some(task_name) = args.task {
         let task = tasks.into_iter().find(|t| t.name() == task_name).with_context(|| format!("Looking for task with name {task_name}"))?;
