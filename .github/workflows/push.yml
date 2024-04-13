@@ -28,7 +28,7 @@ jobs:
         id: rust-cache
         uses: Swatinem/rust-cache@v2
         with:
-          prefix-key: ${{ env.cache-version }}
+          prefix-key: ${{ env.cache-version }}-v2
       - name: Install Rustup
         if: steps.rust-cache.outputs.cache-hit != 'true'
         run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --target ${{ env.windows-target }}
