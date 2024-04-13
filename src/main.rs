@@ -5,6 +5,9 @@ use color_eyre::eyre::ContextCompat;
 use color_eyre::{eyre::Context, Result};
 
 mod platform;
+#[cfg(unix)]
+mod linux_tasks;
+#[cfg(windows)]
 mod windows_tasks;
 mod utility;
 
