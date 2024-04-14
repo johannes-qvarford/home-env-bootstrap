@@ -11,10 +11,7 @@ use color_eyre::{
     Result,
 };
 
-use crate::{
-    utility::symlink,
-    utility::task::{self},
-};
+use crate::utility::{http, symlink, task};
 
 pub(crate) struct ConnectWindowsTerminal;
 
@@ -39,19 +36,7 @@ impl task::Task for ConnectWindowsTerminal {
         )
         .wrap_err_with(|| format!("Symlinking {home_env_path:?} to {terminal_path:?}"))?;
 
-        let pic_url = "https://i.redd.it/r235334p4tl61.png";
-        let pic_response = reqwest::blocking::get(pic_url)
-            .wrap_err_with(|| format!("Fetching terminal pic from: {pic_url}"))?;
-        let status = pic_response.status();
-
-        if !status.is_success() {
-            return Err(Report::msg(format!(
-                "Unsuccessful response when fetching terminal pic url: {status}"
-            )));
-        }
-
-        let bytes = pic_response
-            .bytes()
+        let bytes = http::download("https://i.redd.it/r235334p4tl61.png")
             .wrap_err("Converting response to bytes")?;
 
         let pic_dir = dirs::picture_dir().ok_or(Report::msg("Could not determine picture directory.".to_string()))?;

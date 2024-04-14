@@ -6,7 +6,7 @@ use color_eyre::eyre::{bail, Report};
 use color_eyre::{eyre::Context, Result};
 use dirs::cache_dir;
 
-use crate::utility::task;
+use crate::utility::{process, task};
 use crate::utility::http;
 
 pub(crate) struct DownloadBootstrapLinux;
@@ -18,25 +18,44 @@ impl task::Task for DownloadBootstrapLinux {
 
     fn execute(&self) -> Result<()> {
         let bytes = http::download("https://github.com/johannes-qvarford/home-env-bootstrap/releases/latest/download/bootstrap").context("Downloading bootstrap-linux binary")?;
-        //let mut path = cache_directory().context("Cache directory for download bootstrap-linux binary to.")?;
-        //path.push("bootstrap");
-        let path = PathBuf::from(r#"\\wsl.localhost\Ubuntu\home\jq\bootstrap"#);
+        let path = PathBuf::from(bootstrap_binary_path);
         println!("Path is {path:?}");
         let mut file = File::create(path).context("Creating bootstrap linux file")?;
         file.write_all(&bytes).context("Writing to bootstrap linux file")?;
-        
-        // Note: Windows can't mark it as executable, we need to shell out to wsl.exe to do that.
-        //make it executable.
-
-        //share the filename between tasks.
-        //maybe have both tasks in the same file?
-        //then execute file through wsl.exe -e /path/to/bin/x
+        process::execute("wsl.exe", &["-e", "bash", "-c", &format!("chmod 755 {bootstrap_binary_path_linux}")], &[]).wrap_err("Adding the executable permission to bootstrap-linux binary")?;
         Ok(())
     }
 
     fn requires_restart(&self) -> bool {
         false
     }
+}
+
+
+pub(crate) fn download_bootstrap_linux_task() -> Box<dyn task::Task> {
+    Box::new(DownloadBootstrapLinux)
+}
+
+pub(crate) struct RunBootstrapLinux;
+
+impl task::Task for RunBootstrapLinux {
+    fn name(&self) -> String {
+        "run_bootstrap_linux".to_owned()
+    }
+
+    fn execute(&self) -> Result<()> {
+        process::execute("wsl.exe", &["-e", "bash", "-c", &format!("{} --task bash_temp", bootstrap_binary_path_linux)], &[]).wrap_err("Running bootstrap-linux binary")?;
+        Ok(())
+    }
+
+    fn requires_restart(&self) -> bool {
+        false
+    }
+}
+
+
+pub(crate) fn run_bootstrap_linux_task() -> Box<dyn task::Task> {
+    Box::new(RunBootstrapLinux)
 }
 
 // TODO: Centralize directory handling?
@@ -47,6 +66,5 @@ fn cache_directory() -> Result<PathBuf> {
     Ok(dir)
 }
 
-pub(crate) fn download_bootstrap_linux_task() -> Box<dyn task::Task> {
-    Box::new(DownloadBootstrapLinux)
-}
+const bootstrap_binary_path: &str = r#"\\wsl.localhost\Ubuntu\home\jq\bootstrap"#;
+const bootstrap_binary_path_linux: &str = "/home/jq/bootstrap";
