@@ -2,7 +2,9 @@
 
 
 use color_eyre::eyre::ContextCompat;
+use color_eyre::owo_colors::OwoColorize;
 use color_eyre::{eyre::Context, Result};
+use color_eyre::config::{HookBuilder, Theme};
 
 mod platform;
 #[cfg(unix)]
@@ -26,20 +28,37 @@ struct Args {
 }
 
 fn main() -> Result<()> {
+    match private_main() {
+        Ok(_) => {
+            println!("{}", "Done! Press any button!".green());
+            std::io::stdin().read_line(&mut String::new()).unwrap();
+            std::process::exit(0)
+        }
+        Err(e) => {
+            println!("{:?}", e);
+            println!("{}", "No! Press any button!".red());
+            std::io::stdin().read_line(&mut String::new()).unwrap();
+            std::process::exit(1)
+        },
+    }
+}
+
+fn private_main() -> Result<()> {
+    //std::env::set_var("RUST_BACKTRACE", "full");
+    //std::env::set_var("RUST_SPANTRACE", "1");
+
     color_eyre::install()?;
 
     let args = Args::parse();
     let tasks = platform::tasks();
     
     if let Some(task_name) = args.task {
-        let task = tasks.into_iter().find(|t| t.name() == task_name).with_context(|| format!("Looking for task with name {task_name}"))?;
-
-        task.execute().wrap_err("Executing task")?;
-        task.mark_executed().wrap_err("Marking task as executed")?;
+        let task = tasks.into_iter().find(|t| t.name() == task_name).wrap_err_with(|| format!("Looking for task with name {task_name}"))?;
+        task.execute_or_pause().wrap_err_with(|| format!("Executing task {task_name}"))?;
+        task.mark_executed().wrap_err_with(|| format!("Marking task {task_name} as executed"))?;
         println!("{}", &format!("Forcefully executed task '{task_name}'.").yellow());
         return Ok(());
     }
-
 
     let mut skip = args.skip;
     for task in tasks {
@@ -55,9 +74,6 @@ fn main() -> Result<()> {
             .execute_if_needed()
             .wrap_err_with(|| format!("Executing task '{name}' if needed"))?;
     }
-
-    println!("{}", "Done! Press any button!".green());
-    std::io::stdin().read_line(&mut String::new()).unwrap();
 
     Ok(())
 }

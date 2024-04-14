@@ -1,4 +1,7 @@
 mod bash;
+
+pub(crate) use bash::*;
+
 // DO NOT improve:
 // apt
 // CONSIDER:

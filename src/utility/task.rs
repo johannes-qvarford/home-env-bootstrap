@@ -1,11 +1,9 @@
 use std::{
-    fs::{create_dir_all, File},
-    path::PathBuf,
+    fmt::Debug, fs::{create_dir_all, File}, path::PathBuf
 };
 
 use color_eyre::{
-    eyre::{Context, Report},
-    Result,
+    eyre::{Context, Report}, owo_colors::OwoColorize, Result
 };
 use colored::Colorize;
 
@@ -26,6 +24,10 @@ pub(crate) trait Task {
 }
 
 impl dyn Task {
+    pub(crate) fn execute_or_pause(&self) -> Result<()> {
+        self.execute()
+    }
+
     pub(crate) fn execute_if_needed(&self) -> Result<Execution> {
         let name = self.name();
         create_dir_all(self.mark_directory()?).wrap_err("Creating mark directory")?;
@@ -33,7 +35,7 @@ impl dyn Task {
             .has_been_executed()
             .wrap_err("Checking if task been executed")?;
         if !executed {
-            self.execute().wrap_err("Executing tasks")?;
+            self.execute_or_pause().wrap_err("Executing tasks")?;
             self.mark_executed().wrap_err("Marking task as executed")?;
             println!("{}", &format!("Marked task '{name}' as executed.").green());
             Ok(Execution::Performed)
