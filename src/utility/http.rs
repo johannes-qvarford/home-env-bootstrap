@@ -1,7 +1,9 @@
+#[cfg(windows)]
 use bytes::Bytes;
-
+#[cfg(windows)]
 use color_eyre::{eyre::{Context, Report}, Result};
 
+#[cfg(windows)]
 pub(crate) fn download(url: &str) -> Result<Bytes> {
     let response = reqwest::blocking::get(url)
         .wrap_err_with(|| format!("Downloading resource from: {url}"))?;

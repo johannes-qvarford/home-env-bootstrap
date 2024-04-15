@@ -7,7 +7,7 @@ pub(crate) fn tasks() -> Vec<Box<dyn task::Task>> {
     //use crate::linux_tasks as t;
     use crate::bash_task;
     vec![
-        bash_task!("temp"),
+        bash_task!("test"),
         // // Clone repository
         bash_task!("start"),
         bash_task!("github"),
