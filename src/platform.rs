@@ -27,6 +27,7 @@ pub(crate) fn tasks() -> Vec<Box<dyn task::Task>> {
         bash_task!("java"),
         bash_task!("zig"),
         // Fun
+        bash_task!("images"),
         bash_task!("httpie"),
         bash_task!("colors"),
         bash_task!("fzf"),
