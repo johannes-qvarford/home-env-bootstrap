@@ -42,7 +42,7 @@ jobs:
       - name: Verify Formatting
         run: cargo fmt --all -- --check
       - name: Verify Guidelines
-        run: cargo clippy
+        run: cargo clippy -- -D warnings
       - name: Build for Linux
         run: cargo build --release
       - name: Build for Windows
