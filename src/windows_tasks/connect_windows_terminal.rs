@@ -39,7 +39,9 @@ impl task::Task for ConnectWindowsTerminal {
         let bytes = http::download("https://i.redd.it/r235334p4tl61.png")
             .wrap_err("Converting response to bytes")?;
 
-        let pic_dir = dirs::picture_dir().ok_or(Report::msg("Could not determine picture directory.".to_string()))?;
+        let pic_dir = dirs::picture_dir().ok_or(Report::msg(
+            "Could not determine picture directory.".to_string(),
+        ))?;
         let mut pic_file = pic_dir.clone();
         pic_file.push("terminal_background.png");
         let mut file = File::create(pic_file)

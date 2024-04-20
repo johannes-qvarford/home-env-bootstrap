@@ -28,10 +28,10 @@ jobs:
         id: rust-cache
         uses: Swatinem/rust-cache@v2
         with:
-          prefix-key: ${{ env.cache-version }}-v2
+          prefix-key: ${{ env.cache-version }}-v3
       - name: Install Rustup
         if: steps.rust-cache.outputs.cache-hit != 'true'
-        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --target ${{ env.windows-target }}
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --target ${{ env.windows-target }} --component rustfmt clippy
       - name: Cache Apt packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
@@ -39,6 +39,10 @@ jobs:
           version: ${{ env.cache-version }}-v2
       - name: Install Apt packages
         run: sudo apt-get install -y mingw-w64 lld
+      - name: Verify Formatting
+        run: cargo fmt --all -- --check
+      - name: Verify Guidelines
+        run: cargo clippy
       - name: Build for Linux
         run: cargo build --release
       - name: Build for Windows

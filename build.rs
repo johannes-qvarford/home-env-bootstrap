@@ -7,7 +7,8 @@ fn main() {
     // Running it outside of WSL works fine. Therefor, use debug when developing and only release in the pipeline.
     // Maybe add profiles in the future to allow non-manifest release builds?
     if env::var("TARGET").expect("target").contains("windows")
-        && env::var("PROFILE").expect("profile") == "release".to_owned() {
+        && env::var("PROFILE").expect("profile") == "release".to_owned()
+    {
         embed_resource::compile("build.rc", embed_resource::NONE);
         println!("cargo:rerun-if-changed=build.rc");
     }

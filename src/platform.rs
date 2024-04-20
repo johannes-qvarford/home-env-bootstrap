@@ -1,7 +1,5 @@
 use crate::utility::task;
 
-
-
 #[cfg(unix)]
 pub(crate) fn tasks() -> Vec<Box<dyn task::Task>> {
     //use crate::linux_tasks as t;
@@ -50,7 +48,6 @@ pub(crate) fn tasks() -> Vec<Box<dyn task::Task>> {
         t::winget_task("9PGCV4V3BK4W"), // DevToys
         t::winget_task("DBBrowserForSQLite.DBBrowserForSQLite"),
         t::winget_task("Microsoft.PowerToys"),
-
         // Media
         t::winget_task("Mozilla.Firefox"),
         t::winget_task("Brave.Brave"),
@@ -73,8 +70,7 @@ pub(crate) fn tasks() -> Vec<Box<dyn task::Task>> {
         t::scheduled_task_task("backup-media", "11:00 am"),
         t::scheduled_task_task("upgrade-tools", "12:00 pm"),
         t::connect_windows_terminal_task(),
-
         t::download_bootstrap_linux_task(),
-        t::run_bootstrap_linux_task()
+        t::run_bootstrap_linux_task(),
     ]
 }

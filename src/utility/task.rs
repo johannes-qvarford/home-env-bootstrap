@@ -1,9 +1,12 @@
 use std::{
-    fmt::Debug, fs::{create_dir_all, File}, path::PathBuf
+    fmt::Debug,
+    fs::{create_dir_all, File},
+    path::PathBuf,
 };
 
 use color_eyre::{
-    eyre::{Context, Report}, Result
+    eyre::{Context, Report},
+    Result,
 };
 
 use owo_colors::{OwoColorize, Stream::Stdout};
@@ -38,12 +41,17 @@ impl dyn Task {
         if !executed {
             self.execute_or_pause().wrap_err("Executing tasks")?;
             self.mark_executed().wrap_err("Marking task as executed")?;
-            println!("{}", &format!("Marked task '{name}' as executed.").if_supports_color(Stdout, |x| x.green()));
+            println!(
+                "{}",
+                &format!("Marked task '{name}' as executed.")
+                    .if_supports_color(Stdout, |x| x.green())
+            );
             Ok(Execution::Performed)
         } else {
             println!(
                 "{}",
-                &format!("Skipping task '{name}' since it has already been executed.").if_supports_color(Stdout, |x| x.blue())
+                &format!("Skipping task '{name}' since it has already been executed.")
+                    .if_supports_color(Stdout, |x| x.blue())
             );
             Ok(Execution::Skipped)
         }

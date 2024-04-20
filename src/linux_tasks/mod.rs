@@ -11,4 +11,4 @@ pub(crate) use bash::*;
 // snap
 // dotfiles (with automatic parent directory creation)
 // ssh key creation
-// 
+//

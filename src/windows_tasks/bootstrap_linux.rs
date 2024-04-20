@@ -4,8 +4,8 @@ use std::path::PathBuf;
 
 use color_eyre::{eyre::Context, Result};
 
-use crate::utility::{process, task};
 use crate::utility::http;
+use crate::utility::{process, task};
 
 pub(crate) struct DownloadBootstrapLinux;
 
@@ -19,8 +19,19 @@ impl task::Task for DownloadBootstrapLinux {
         let path = PathBuf::from(BOOTSTRAP_BINARY_PATH);
         println!("Path is {path:?}");
         let mut file = File::create(path).context("Creating bootstrap linux file")?;
-        file.write_all(&bytes).context("Writing to bootstrap linux file")?;
-        process::execute("wsl.exe", &["-e", "bash", "-c", &format!("chmod 755 {BOOTSTRAP_BINARY_PATH_LINUX}")], &[]).wrap_err("Adding the executable permission to bootstrap-linux binary")?;
+        file.write_all(&bytes)
+            .context("Writing to bootstrap linux file")?;
+        process::execute(
+            "wsl.exe",
+            &[
+                "-e",
+                "bash",
+                "-c",
+                &format!("chmod 755 {BOOTSTRAP_BINARY_PATH_LINUX}"),
+            ],
+            &[],
+        )
+        .wrap_err("Adding the executable permission to bootstrap-linux binary")?;
         Ok(())
     }
 
@@ -28,7 +39,6 @@ impl task::Task for DownloadBootstrapLinux {
         false
     }
 }
-
 
 pub(crate) fn download_bootstrap_linux_task() -> Box<dyn task::Task> {
     Box::new(DownloadBootstrapLinux)
@@ -42,7 +52,17 @@ impl task::Task for RunBootstrapLinux {
     }
 
     fn execute(&self) -> Result<()> {
-        process::execute("wsl.exe", &["-e", "bash", "-c", &format!("{}", BOOTSTRAP_BINARY_PATH_LINUX)], &[]).wrap_err("Running bootstrap-linux binary")?;
+        process::execute(
+            "wsl.exe",
+            &[
+                "-e",
+                "bash",
+                "-c",
+                &format!("{}", BOOTSTRAP_BINARY_PATH_LINUX),
+            ],
+            &[],
+        )
+        .wrap_err("Running bootstrap-linux binary")?;
         Ok(())
     }
 
@@ -50,7 +70,6 @@ impl task::Task for RunBootstrapLinux {
         false
     }
 }
-
 
 pub(crate) fn run_bootstrap_linux_task() -> Box<dyn task::Task> {
     Box::new(RunBootstrapLinux)
