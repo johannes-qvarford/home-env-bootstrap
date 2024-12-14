@@ -1,2 +1,0 @@
-* Use formatting
-* Use clippy
