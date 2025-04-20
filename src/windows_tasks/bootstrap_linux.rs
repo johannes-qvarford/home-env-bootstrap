@@ -34,10 +34,6 @@ impl task::Task for DownloadBootstrapLinux {
         .wrap_err("Adding the executable permission to bootstrap-linux binary")?;
         Ok(())
     }
-
-    fn requires_restart(&self) -> bool {
-        false
-    }
 }
 
 pub(crate) fn download_bootstrap_linux_task() -> Box<dyn task::Task> {
@@ -64,10 +60,6 @@ impl task::Task for RunBootstrapLinux {
         )
         .wrap_err("Running bootstrap-linux binary")?;
         Ok(())
-    }
-
-    fn requires_restart(&self) -> bool {
-        false
     }
 }
 

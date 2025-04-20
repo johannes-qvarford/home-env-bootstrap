@@ -12,10 +12,6 @@ impl task::Task for InstallWsl {
     fn execute(&self) -> Result<()> {
         process::execute("wsl.exe", &["--install"], &[]).wrap_err("Installing WSL".to_string())
     }
-
-    fn requires_restart(&self) -> bool {
-        false
-    }
 }
 
 pub(crate) fn install_wsl_task() -> Box<dyn task::Task> {

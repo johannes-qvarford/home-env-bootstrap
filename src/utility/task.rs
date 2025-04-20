@@ -22,9 +22,6 @@ pub(crate) enum Execution {
 pub(crate) trait Task {
     fn name(&self) -> String;
     fn execute(&self) -> Result<()>;
-    fn requires_restart(&self) -> bool {
-        false
-    }
 }
 
 impl dyn Task {
