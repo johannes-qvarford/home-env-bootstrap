@@ -71,7 +71,7 @@ impl dyn Task {
 
     fn mark_path(&self) -> Result<PathBuf> {
         let mut path = self.mark_directory().wrap_err("Calculating mark path")?;
-        path.push(&self.name());
+        path.push(self.name());
         Ok(path)
     }
 
