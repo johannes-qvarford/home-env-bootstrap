@@ -10,5 +10,5 @@ pub(crate) use choco::*;
 pub(crate) use connect_windows_terminal::*;
 pub(crate) use install_wsl::*;
 pub(crate) use scheduled_task::*;
-pub(crate) use winget::*;
 pub(crate) use set_path::*;
+pub(crate) use winget::*;
