@@ -3,6 +3,7 @@ pub(crate) mod choco;
 pub(crate) mod connect_windows_terminal;
 pub(crate) mod install_wsl;
 pub(crate) mod scheduled_task;
+pub(crate) mod set_path;
 pub(crate) mod winget;
 
 pub(crate) use bootstrap_linux::*;

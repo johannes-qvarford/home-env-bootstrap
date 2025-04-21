@@ -24,7 +24,7 @@ impl task::Task for SetPathTask {
     }
 }
 
-fn powershell_string(task: &SetPathTask) -> String {
+fn powershell_string(_task: &SetPathTask) -> String {
     format!(
         r#"
         $env:Path += ";$home\bin"
@@ -34,5 +34,5 @@ fn powershell_string(task: &SetPathTask) -> String {
 }
 
 pub(crate) fn set_path_task() -> Box<dyn task::Task> {
-    Box::new(ScheduledTask)
+    Box::new(SetPathTask)
 }
