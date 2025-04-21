@@ -6,32 +6,27 @@ on:
       - "main"
 
 env:
-  cache-version: v5
+  cache-version: v6
   windows-target: x86_64-pc-windows-gnu
 
 jobs:
   build:
     name: Deploy
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.10
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      #- name: Add Cargo to PATH
-      #  run: echo "${HOME}/.cargo/bin" >> $GITHUB_PATH
-      # - name: Cache Cargo
-      #   id: cache-cargo
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: $HOME/.cargo
-      #     key: ubuntu-22.04-cache-cargo-${{ env.cache-version }}
       - name: Cache Cargo packages
         id: rust-cache
         uses: Swatinem/rust-cache@v2
         with:
           prefix-key: ${{ env.cache-version }}-v3
       - name: Install Rustup
+        uses: dtolnay/rust-toolchain@stable
         if: steps.rust-cache.outputs.cache-hit != 'true'
-        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --target ${{ env.windows-target }} --component rustfmt clippy
+        with:
+          components: rustfmt, clippy
+          targets: ${{ env.windows-target }}
       - name: Cache Apt packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:

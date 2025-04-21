@@ -6,7 +6,7 @@ pub(crate) fn tasks() -> Vec<Box<dyn task::Task>> {
     use crate::bash_task;
     vec![
         bash_task!("test"),
-        // // Clone repository
+        // Clone repository
         bash_task!("start"),
         bash_task!("github"),
         bash_task!("clone-home-env"),
@@ -69,6 +69,7 @@ pub(crate) fn tasks() -> Vec<Box<dyn task::Task>> {
         // WSL
         t::scheduled_task_task("backup-media", "11:00 am"),
         t::scheduled_task_task("upgrade-tools", "12:00 pm"),
+        t::set_path_task(),
         t::connect_windows_terminal_task(),
         t::download_bootstrap_linux_task(),
         t::run_bootstrap_linux_task(),
