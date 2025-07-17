@@ -35,7 +35,7 @@ fn main() -> Result<()> {
             std::process::exit(0)
         }
         Err(e) => {
-            println!("{:?}", e);
+            println!("{e:?}");
             println!(
                 "{}",
                 "No! Press any button!".if_supports_color(Stdout, |x| x.red())
