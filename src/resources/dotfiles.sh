@@ -16,6 +16,7 @@ link .ssh/config
 dir .config
 link .config/fish
 link .config/icons
+link .config/shell_gpt
 
 dir .docker
 link .docker/config.json

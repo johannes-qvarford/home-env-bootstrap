@@ -31,6 +31,7 @@ pub(crate) fn tasks() -> Vec<Box<dyn task::Task>> {
         bash_task!("fzf"),
         bash_task!("extra"),
         bash_task!("backup"),
+        bash_task!("sgpt"),
     ]
 }
 
